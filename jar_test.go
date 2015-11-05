@@ -18,7 +18,7 @@ type testStorage struct {
 	entries map[string]map[string]Entry
 }
 
-func (s testStorage) Get(id string, key string) map[string]Entry {
+func (s *testStorage) Get(id string, key string) map[string]Entry {
 	submap, ok := s.entries[key]
 	if ok {
 		return submap
@@ -27,7 +27,7 @@ func (s testStorage) Get(id string, key string) map[string]Entry {
 	}
 }
 
-func (s testStorage) Set(id string, key string, cookies map[string]Entry) {
+func (s *testStorage) Set(id string, key string, cookies map[string]Entry) {
 	if len(cookies) == 0 {
 		delete(s.entries, key)
 	} else {
@@ -35,8 +35,8 @@ func (s testStorage) Set(id string, key string, cookies map[string]Entry) {
 	}
 }
 
-func newTestStorage() testStorage {
-	return testStorage{
+func newTestStorage() *testStorage {
+	return &testStorage{
 		entries: make(map[string]map[string]Entry),
 	}
 }
@@ -58,7 +58,7 @@ func (testPSL) PublicSuffix(d string) string {
 	return d[strings.LastIndex(d, ".")+1:]
 }
 
-var TestStorageVar testStorage
+var TestStorageVar *testStorage
 
 // newTestJar creates an empty Jar with testPSL as the public suffix list.
 func newTestJar() *Jar {
